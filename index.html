@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nexa's Crochet Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--pink:#f4a6c0;--hot:#d9457f;--soft:#ffe3ee;--cream:#fff7ec;--brown:#6b4226;--tan:#e8d5bd;--w:#fff}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',Arial,sans-serif;background:var(--cream);color:var(--brown);line-height:1.5}
+h1,h2,h3,.logo b{font-family:'Pacifico',cursive;font-weight:400}
+h2{font-size:1.9rem;color:var(--hot);margin-bottom:16px;text-align:center}
+button,input,select,textarea{font:inherit;color:inherit}
+.btn{display:inline-block;background:var(--hot);color:#fff;border:0;padding:13px 22px;border-radius:30px;font-weight:800;cursor:pointer;text-decoration:none;text-align:center}
+.btn.alt{background:var(--w);color:var(--hot);border:2px solid var(--hot)}
+.btn.wa{background:#25a244}
+.btn.full{width:100%;margin-top:8px}
+/* loader */
+#loader{position:fixed;inset:0;background:var(--soft);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:99;text-align:center;padding:20px}
+#loader .logo{display:flex;flex-direction:column;align-items:center}
+.logo b{font-size:4.2rem;color:var(--hot);line-height:1;text-shadow:3px 3px 0 var(--tan)}
+.logo small{font-size:1.1rem;letter-spacing:4px;font-weight:800;color:var(--brown);margin-top:6px}
+.yarn{width:70px;height:70px;animation:roll 2s ease-in-out}
+@keyframes roll{from{transform:rotate(-360deg)}to{transform:none}}
+.bar{width:min(280px,80%);height:12px;background:var(--w);border-radius:10px;margin:26px 0 10px;overflow:hidden;border:2px solid var(--pink)}
+.bar i{display:block;height:100%;width:0;background:var(--hot);animation:fill 2s linear forwards}
+@keyframes fill{to{width:100%}}
+/* header + nav */
+header{background:var(--w);display:flex;align-items:center;justify-content:space-between;padding:10px 5%;position:sticky;top:0;z-index:20;border-bottom:3px solid var(--pink)}
+header .logo{flex-direction:row;display:flex;align-items:center;gap:8px;cursor:pointer}
+header .logo b{font-size:1.5rem;text-shadow:none}
+header .logo small{font-size:.65rem;letter-spacing:1px;margin:0;display:block}
+header .yarn{width:34px;height:34px;animation:none}
+nav{display:flex;gap:6px}
+nav a{padding:8px 14px;border-radius:20px;font-weight:800;cursor:pointer;color:var(--brown);text-decoration:none;display:flex;gap:6px;align-items:center}
+nav a .ic{display:none}
+nav a.on{background:var(--hot);color:#fff}
+main{max-width:1050px;margin:auto;padding:24px 5% 90px}
+.pg{display:none}.pg.show{display:block}
+/* hero */
+.hero{background:linear-gradient(135deg,var(--soft),var(--tan));border-radius:28px;padding:44px 24px;text-align:center;border:3px dashed var(--pink)}
+.hero h1{font-size:clamp(2rem,6vw,3.2rem);color:var(--hot);line-height:1.2}
+.hero p{margin:14px auto 22px;max-width:480px;font-size:1.1rem}
+.hero .btn{margin:5px}
+section.blk{margin-top:40px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px}
+.card{background:var(--w);border-radius:22px;overflow:hidden;box-shadow:0 4px 14px rgba(107,66,38,.12);display:flex;flex-direction:column}
+.ph{height:260px;background:linear-gradient(135deg,var(--pink),var(--tan));display:flex;align-items:center;justify-content:center;font-size:3.5rem;position:relative;overflow:hidden}
+.ph img{width:100%;height:100%;object-fit:cover;display:block}
+.ph span{position:absolute;bottom:6px;right:10px;font-size:.7rem;font-weight:800;opacity:.7;background:rgba(255,255,255,.85);padding:3px 8px;border-radius:10px}
+.cb{padding:14px;display:flex;flex-direction:column;gap:6px;flex:1}
+.cb h3{font-size:1.2rem;color:var(--brown)}
+.price{font-weight:800;color:var(--hot);font-size:1.15rem}
+.cb p{font-size:.92rem}
+select,input,textarea{width:100%;padding:11px 12px;border:2px solid var(--tan);border-radius:12px;background:var(--cream)}
+select:focus,input:focus,textarea:focus{outline:none;border-color:var(--hot)}
+label{font-weight:800;font-size:.9rem;display:block;margin:12px 0 4px}
+.why{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.why div{background:var(--w);padding:22px;border-radius:20px;text-align:center;border-bottom:5px solid var(--pink)}
+.why div big{font-size:2.2rem;display:block}
+.why h3{font-size:1.2rem;color:var(--hot);margin:6px 0}
+.box{background:var(--w);padding:22px;border-radius:22px;max-width:560px;margin:auto;box-shadow:0 4px 14px rgba(107,66,38,.12)}
+.bank{background:var(--soft);padding:12px;border-radius:12px;margin-top:8px;font-size:.95rem;display:none}
+.pay{display:flex;gap:8px;align-items:flex-start;margin:6px 0;font-weight:600}
+.pay input{width:auto;margin-top:5px}
+.total{font-weight:800;font-size:1.2rem;color:var(--hot);margin-top:12px}
+.done{text-align:center;display:none}
+.done h2{margin-bottom:6px}
+.oid{font-size:2rem;font-weight:800;background:var(--soft);display:inline-block;padding:8px 20px;border-radius:14px;margin:10px 0;color:var(--hot)}
+.steps{margin-top:20px;display:none}
+.st{display:flex;gap:14px;align-items:center;padding:12px 0;opacity:.4;position:relative}
+.st .dot{width:46px;height:46px;border-radius:50%;background:var(--tan);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex:none}
+.st.ok{opacity:1}.st.ok .dot{background:var(--pink)}
+.st.now .dot{background:var(--hot);animation:pulse 1.2s infinite}
+@keyframes pulse{50%{transform:scale(1.12)}}
+.msg{margin-top:12px;font-weight:800;color:var(--hot)}
+.about p{margin-bottom:12px}
+.rev{background:var(--w);padding:18px;border-radius:18px;margin-bottom:12px;border-left:5px solid var(--pink)}
+footer{background:var(--brown);color:var(--cream);text-align:center;padding:26px 5%;margin-top:40px;border-radius:22px}
+footer a{color:var(--pink);font-weight:800}
+footer p{margin:4px 0}
+@media(max-width:768px){
+ header .logo small{display:none}
+ nav{position:fixed;bottom:0;left:0;right:0;background:var(--w);justify-content:space-around;padding:6px 4px calc(6px + env(safe-area-inset-bottom));border-top:3px solid var(--pink);z-index:30;gap:0}
+ nav a{flex-direction:column;gap:0;font-size:.68rem;padding:6px 8px;border-radius:14px}
+ nav a .ic{display:block;font-size:1.3rem}
+ .hero{padding:32px 16px}
+}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01s!important}}
+</style>
+</head>
+<body>
+
+<div id="loader">
+ <div class="logo">
+  <svg class="yarn" viewBox="0 0 64 64"><circle cx="30" cy="32" r="22" fill="#f4a6c0" stroke="#6b4226" stroke-width="3"/><path d="M12 24c14 6 26 6 38 0M10 36c14 7 28 7 40 0M18 14c6 14 6 28 0 40M34 10c8 12 8 30 0 44" fill="none" stroke="#6b4226" stroke-width="2" opacity=".6"/><path d="M50 50c8 2 10 8 4 10" fill="none" stroke="#d9457f" stroke-width="3" stroke-linecap="round"/></svg>
+  <b>NEXA'S</b><small>Crochet Hub</small>
+ </div>
+ <div class="bar"><i></i></div>
+ <p style="font-weight:800">Crocheting your experience...</p>
+</div>
+
+<div id="app" style="display:none">
+<header>
+ <div class="logo" onclick="go('home')">
+  <svg class="yarn" viewBox="0 0 64 64"><circle cx="30" cy="32" r="22" fill="#f4a6c0" stroke="#6b4226" stroke-width="3"/><path d="M12 24c14 6 26 6 38 0M10 36c14 7 28 7 40 0M18 14c6 14 6 28 0 40M34 10c8 12 8 30 0 44" fill="none" stroke="#6b4226" stroke-width="2" opacity=".6"/></svg>
+  <div><b>Nexa's</b><small>CROCHET HUB</small></div>
+ </div>
+ <nav>
+  <a data-p="home" onclick="go('home')"><span class="ic">🏠</span>Home</a>
+  <a data-p="shop" onclick="go('shop')"><span class="ic">🛍️</span>Shop</a>
+  <a data-p="custom" onclick="go('custom')"><span class="ic">✂️</span>Custom Order</a>
+  <a data-p="track" onclick="go('track')"><span class="ic">📦</span>Track Order</a>
+  <a data-p="about" onclick="go('about')"><span class="ic">💖</span>About</a>
+ </nav>
+</header>
+
+<main>
+<!-- HOME -->
+<div class="pg" id="pg-home">
+ <div class="hero">
+  <h1>Handmade Crochet, Made Just For You</h1>
+  <p>Every piece is crocheted by hand in Lagos - you choose your colour and size</p>
+  <button class="btn" onclick="go('shop')">Shop Now</button>
+  <button class="btn alt" onclick="go('custom')">Order Custom Piece</button>
+ </div>
+ <section class="blk"><h2>Best Sellers</h2><div class="grid" id="best"></div></section>
+ <section class="blk"><h2>Why Buy From Me</h2>
+  <div class="why">
+   <div><big>🧶</big><h3>Handmade</h3><p>Every stitch is done by hand. No machine, no rush.</p></div>
+   <div><big>🎀</big><h3>Made For You</h3><p>You pick the colour and size. I crochet it just for you.</p></div>
+   <div><big>⭐</big><h3>Quality Yarn</h3><p>Soft, strong yarn that lasts and does not fade fast.</p></div>
+  </div>
+ </section>
+ <footer>
+  <p><b>Nexa's Crochet Hub</b> - Handmade With Love, Made Just For You</p>
+  <p>WhatsApp: <a href="https://wa.me/2348022792833">08022792833</a></p>
+  <p>Instagram: <a href="https://www.instagram.com/naomi52460?obrf=bzM5dzY0dTM0M3lj" target="_blank" rel="noopener">@naomi52460</a></p>
+  <p>Location: Ogun State, Nigeria</p>
+ </footer>
+</div>
+
+<!-- SHOP -->
+<div class="pg" id="pg-shop">
+ <h2>Our Shop</h2>
+ <div class="grid" id="shopgrid"></div>
+</div>
+
+<!-- CHECKOUT -->
+<div class="pg" id="pg-checkout">
+ <div class="box">
+  <form id="ckForm">
+   <h2>Place Your Order</h2>
+   <label>Full Name</label><input id="cName" required>
+   <label>Phone Number</label><input id="cPhone" type="tel" inputmode="tel" required placeholder="08012345678">
+   <label>Delivery Address</label><textarea id="cAddr" rows="2" required></textarea>
+   <label>Product Name</label><select id="cProd" onchange="fillOpts()"></select>
+   <label>Colour</label><select id="cCol"></select>
+   <label>Size</label><select id="cSize" onchange="calc()"></select>
+   <label>Quantity</label><input id="cQty" type="number" min="1" value="1" oninput="calc()">
+   <div class="total" id="cTotal"></div>
+   <label>Payment Method</label>
+   <label class="pay"><input type="radio" name="pay" value="Bank Transfer" checked onchange="bank()"> Bank Transfer</label>
+   <label class="pay"><input type="radio" name="pay" value="Pay on Delivery" onchange="bank()"> Pay on Delivery</label>
+   <div class="bank" id="bankBox">Account Name: <b>Zion Munachi</b><br>Account Number: <b>7068409766</b><br>Bank: <b>Palmpay</b><br><small>Send your payment proof on WhatsApp after you order.</small></div>
+   <button class="btn full" type="submit">Submit Order</button>
+  </form>
+  <div class="done" id="done">
+   <div style="font-size:3rem">🎉</div>
+   <h2>Order Received!</h2>
+   <p>Your Order ID is</p>
+   <div class="oid" id="oidTxt"></div>
+   <p>Please save this ID. You will use it to track your order.</p>
+   <a class="btn wa full" id="waBtn" target="_blank" rel="noopener">Send Order to WhatsApp</a>
+   <button class="btn alt full" onclick="go('track')">Track My Order</button>
+  </div>
+ </div>
+</div>
+
+<!-- CUSTOM -->
+<div class="pg" id="pg-custom">
+ <div class="box">
+  <h2>Want Something Different? Order Custom</h2>
+  <form id="cuForm">
+   <label>What do you want?</label>
+   <select id="uWhat"><option>Bag</option><option>Hat</option><option>Pants</option><option>Other</option></select>
+   <label>Tell us more (optional)</label><textarea id="uMore" rows="2" placeholder="Example: a small tote with my name on it"></textarea>
+   <label>Your Colour</label><input id="uCol" required>
+   <label>Your Size</label><input id="uSize" required placeholder="Example: M, or measurements">
+   <label>Your Budget (₦)</label><input id="uBud" required inputmode="numeric">
+   <label>Your Phone</label><input id="uPhone" type="tel" required>
+   <button class="btn wa full" type="submit">Send Custom Order on WhatsApp</button>
+  </form>
+ </div>
+</div>
+
+<!-- TRACK -->
+<div class="pg" id="pg-track">
+ <div class="box">
+  <h2>Track My Order</h2>
+  <form id="trForm">
+   <label>Order ID</label><input id="tId" required placeholder="NEXA-1234">
+   <label>Phone Number</label><input id="tPhone" type="tel" required>
+   <button class="btn full" type="submit">Track</button>
+  </form>
+  <div class="msg" id="tMsg"></div>
+  <div class="steps" id="steps"></div>
+ </div>
+</div>
+
+<!-- ABOUT -->
+<div class="pg" id="pg-about">
+ <div class="box about" style="max-width:700px">
+  <h2>About Nexa</h2>
+  <p>Hi, I'm Nexa. I crochet every piece by hand in Ogun State. I started with one hook and one ball of yarn, and today I make bags, hats, pants and more for people all over Nigeria.</p>
+  <p>My promise: <i>Handmade With Love, Made Just For You.</i></p>
+  <h3 style="color:var(--hot);margin:16px 0 8px">Why buy from me?</h3>
+  <p>🧶 Every piece is handmade, not factory made.<br>🎀 You choose your colour and size.<br>⭐ I use soft, strong yarn.<br>💬 I reply fast on WhatsApp.</p>
+  <h3 style="color:var(--hot);margin:16px 0 8px">What customers say</h3>
+  <div class="rev">"My heart tote bag is so neat and strong. Everybody asks where I got it!" <br><b>- Chiamaka, Lagos</b></div>
+  <div class="rev">"The baggy pants fit perfectly and the yarn is very soft. Delivery was on time." <br><b>- Tolu, Abeokuta</b></div>
+  <div class="rev">"I ordered a custom beanie in my school colours. Beautiful work!" <br><b>- Femi, Ibadan</b></div>
+  <a class="btn wa full" href="https://wa.me/2348022792833" target="_blank" rel="noopener">Chat With Me on WhatsApp</a>
+ </div>
+</div>
+</main>
+</div>
+
+<script>
+var WA="2348022792833";
+var FREE=["Free size"];
+var P=[
+{n:"Crochet Tie",p:6000,d:"Unisex, for school, church, streetwear",c:["Black","Brown","Cream","Blue Ombre"],s:FREE,img:"tie.jpg",alt:"Blue ombre crochet tie"},
+{n:"Ruffle Bucket Hat",p:10000,d:"Soft yarn, fits all sizes - Cream with wine bow, or Wine with white ruffle. Pick your colours!",c:["Cream / Wine Bow","Wine / White Ruffle","Pink","Black","Any combo - tell us"],s:FREE,img:"bucket-cream.jpg",alt:"Cream ruffle bucket hat with wine bow",img2:"bucket-wine.jpg"},
+{n:"Slouchy Beanie",p:9000,d:"Warm and soft - Pink, black and white swirl",c:["Pink / Black / White Swirl","Pink","Cream","Brown","Black","Any other colour (tell us)"],s:FREE,img:"beanie.jpg",alt:"Pink black white swirl slouch beanie"},
+{n:"Crochet Baggy Pants",p:25000,d:"High waist, wide leg - granny square design",c:["Green / Blue / Black / White","Cream","Mocha","Sage","Your own combo"],s:["S","M","L","XL"],img:"baggy-pants.jpg",alt:"Crochet baggy pants granny squares"},
+{n:"Heart Tote Bag",p:28000,d:"Cute tote, strong handle - Black & white checkered with hearts",c:["Black / White Hearts","Pink/White","Brown/Cream"],s:["One size"],img:"heart-tote.jpg",alt:"Black and white checkered heart tote bag"},
+{n:"Crochet Scrunchies",p:4000,pt:"₦4,000 each, 3 for ₦10,000",d:"Soft, does not break your hair",c:["Pink","Cream","Brown","Black","Mixed","White","Red","Red / White Mixed"],s:["1 piece","3 pieces"],sp:{"1 piece":4000,"3 pieces":10000},img:"scrunchies.jpg",alt:"White red and mixed crochet scrunchies",pack:1},
+{n:"Cat Beanie",p:9000,d:"Cute cat ears",c:["Pink","Black","Cream"],s:FREE,img:"cat-beanie.jpg",alt:"Black cat beanie with cute ears"},
+
+{n:"Wine Ruffle Bucket Hat",p:10000,d:"Soft ruffle bucket hat in wine",c:["Wine"],s:FREE,img:"bucket-wine.jpg",alt:"Wine ruffle bucket hat"},
+];
+var N=function(x){return "₦"+x.toLocaleString("en-NG")};
+var $=function(i){return document.getElementById(i)};
+
+function card(p,i,pre){
+ // If product has a real photo, show it. If not (Cat Beanie), keep emoji.
+ var photo = p.img ? '<img src="'+p.img+'" alt="'+(p.alt||p.n)+'">' : '<span style="font-size:3.5rem">'+(p.e||'🧶')+'</span>';
+ var h='<div class="card"><div class="ph">'+photo+'</div><div class="cb"><h3>'+p.n+'</h3><div class="price">'+(p.pt||N(p.p))+'</div><p>'+p.d+'</p>';
+ if(pre){
+  h+='<select id="c'+i+'" aria-label="Colour">'+p.c.map(function(x){return '<option>'+x+'</option>'}).join("")+'</select>';
+  h+='<select id="s'+i+'" aria-label="Size">'+p.s.map(function(x){return '<option>'+x+'</option>'}).join("")+'</select>';
+  h+='<button class="btn" onclick="orderNow('+i+')">Order Now</button>';
+ }else h+='<button class="btn" onclick="go(\'shop\')">View in Shop</button>';
+ return h+'</div></div>';
+}
+$("shopgrid").innerHTML=P.map(function(p,i){return card(p,i,1)}).join("");
+$("best").innerHTML=[4,1,3].map(function(i){return card(P[i],i,0)}).join("");
+
+function go(pg){
+ document.querySelectorAll(".pg").forEach(function(e){e.classList.remove("show")});
+ $("pg-"+pg).classList.add("show");
+ document.querySelectorAll("nav a").forEach(function(a){a.classList.toggle("on",a.dataset.p===pg||(pg==="checkout"&&a.dataset.p==="shop"))});
+ window.scrollTo(0,0);
+}
+function orderNow(i){
+ $("ckForm").style.display="block";$("done").style.display="none";
+ $("cProd").innerHTML=P.map(function(p,j){return '<option value="'+j+'">'+p.n+'</option>'}).join("");
+ $("cProd").value=i;fillOpts();
+ $("cCol").value=$("c"+i).value;$("cSize").value=$("s"+i).value;calc();
+ go("checkout");
+}
+function fillOpts(){
+ var p=P[$("cProd").value];
+ $("cCol").innerHTML=p.c.map(function(x){return '<option>'+x+'</option>'}).join("");
+ $("cSize").innerHTML=p.s.map(function(x){return '<option>'+x+'</option>'}).join("");
+ calc();
+}
+function unit(){var p=P[$("cProd").value];return (p.sp&&p.sp[$("cSize").value])||p.p}
+function calc(){$("cTotal").textContent="Total: "+N(unit()*(+$("cQty").value||1))}
+function bank(){$("bankBox").style.display=document.querySelector('input[name=pay]:checked').value==="Bank Transfer"?"block":"none"}
+bank();
+
+$("ckForm").onsubmit=function(e){
+ e.preventDefault();
+ var p=P[$("cProd").value],id="NEXA-"+(1000+Math.floor(Math.random()*9000));
+ var o={id:id,name:$("cName").value,phone:$("cPhone").value.replace(/\s/g,""),addr:$("cAddr").value,prod:p.n,col:$("cCol").value,size:$("cSize").value,qty:+$("cQty").value,pay:document.querySelector('input[name=pay]:checked').value,total:unit()*(+$("cQty").value),status:1};
+ try{var all=JSON.parse(localStorage.getItem("nexaOrders")||"[]");all.push(o);localStorage.setItem("nexaOrders",JSON.stringify(all))}catch(x){}
+ var m="Hello Nexa's Crochet Hub! I want to place an order.\n\nOrder ID: "+o.id+"\nName: "+o.name+"\nPhone: "+o.phone+"\nAddress: "+o.addr+"\nProduct: "+o.prod+"\nColour: "+o.col+"\nSize: "+o.size+"\nQuantity: "+o.qty+"\nTotal: "+N(o.total)+"\nPayment: "+o.pay;
+ $("oidTxt").textContent=id;
+ $("waBtn").href="https://wa.me/"+WA+"?text="+encodeURIComponent(m);
+ $("ckForm").style.display="none";$("done").style.display="block";
+ $("ckForm").reset();window.scrollTo(0,0);
+};
+
+$("cuForm").onsubmit=function(e){
+ e.preventDefault();
+ var m="Hello Nexa's Crochet Hub! I want a CUSTOM order.\n\nI want: "+$("uWhat").value+"\nDetails: "+($("uMore").value||"-")+"\nColour: "+$("uCol").value+"\nSize: "+$("uSize").value+"\nBudget: ₦"+$("uBud").value+"\nPhone: "+$("uPhone").value;
+ window.open("https://wa.me/"+WA+"?text="+encodeURIComponent(m),"_blank");
+};
+
+var STEPS=[["📩","Order Received"],["🧶","Crocheting Your Piece"],["🚚","Ready / Out for Delivery"],["🎁","Delivered"]];
+$("trForm").onsubmit=function(e){
+ e.preventDefault();
+ var id=$("tId").value.trim().toUpperCase(),ph=$("tPhone").value.replace(/\s/g,""),o=null;
+ try{(JSON.parse(localStorage.getItem("nexaOrders")||"[]")).forEach(function(x){if(x.id===id&&x.phone===ph)o=x})}catch(x){}
+ if(!o){$("steps").style.display="none";$("tMsg").textContent="We cannot find this order. Check your Order ID and phone number, or message us on WhatsApp.";return}
+ $("tMsg").textContent="Order Received - Crocheting ("+o.prod+")";
+ $("steps").innerHTML=STEPS.map(function(s,i){return '<div class="st '+(i<o.status?'ok':'')+(i===o.status?' now':'')+'"><div class="dot">'+s[0]+'</div><b>'+s[1]+'</b></div>'}).join("");
+ $("steps").style.display="block";
+};
+
+setTimeout(function(){$("loader").style.display="none";$("app").style.display="block";go("home")},2000);
+</script>
+</body>
+</html>
+
